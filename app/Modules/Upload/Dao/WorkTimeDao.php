@@ -37,6 +37,19 @@ class WorkTimeDao extends BaseDao
     }
 
     /**
+     * 获取所有项目信息
+     *
+     * @author 秦昊
+     * Date: 2018/12/21 19:22
+     * @param array $columns
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getProjectList(array $columns = ['*'])
+    {
+        return $this->all($columns);
+    }
+
+    /**
      * 构建查询条件
      *
      * @author 秦昊
@@ -46,7 +59,7 @@ class WorkTimeDao extends BaseDao
      * @param array $withs
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function doQuery(array $params, $columns = [], $withs = [])
+    public function doQuery(array $params, array $columns = [], array $withs = [])
     {
         $query = $this->getModel()->newQuery();
 

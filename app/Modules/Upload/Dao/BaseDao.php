@@ -89,11 +89,14 @@ abstract class BaseDao extends Dao
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]
+     * @author 秦昊
+     * Date: 2018/12/21 19:22
+     * @param array $columns
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function all()
+    public function all(array $columns = ['*'])
     {
-        return $this->getModel()->all();
+        return $this->getModel()->all($columns);
     }
 
     /**

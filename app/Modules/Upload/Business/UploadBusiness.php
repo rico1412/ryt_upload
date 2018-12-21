@@ -33,6 +33,18 @@ class UploadBusiness extends BaseBusiness
     }
 
     /**
+     * 获取所有项目信息
+     *
+     * @author 秦昊
+     * Date: 2018/12/21 19:23
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getProjectList()
+    {
+        return $this->workTimeDao->getProjectList();
+    }
+
+    /**
      *
      *
      * @author 秦昊
