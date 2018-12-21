@@ -43,10 +43,10 @@ class Handler extends ExceptionHandler
         AppException::class                  => 'handleAppException',
         ApiException::class                  => 'handleApiException',
         NotFoundHttpException::class         => 'handleNotFoundHttpException',
-        ArticleException::class              => 'handleArticleException',
         MethodNotAllowedHttpException::class => 'handleMethodNotAllowedHttpException',
         ValidatorException::class            => 'handleValidatorException',
         FaqInfoException::class              => 'handleFaqInfoException',
+        FileUploadException::class           => 'handleFileUploadException',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param Exception $e
+     * @param Exception $exception
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      */
     public function render($request, Exception $exception)
@@ -217,6 +217,17 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      */
     protected function handleFaqInfoException(FaqInfoException $exception, $request)
+    {
+        return $this->ok($exception->all());
+    }
+
+    /**
+     * @author 秦昊
+     * Date: 2018/12/19 18:41
+     * @param FileUploadException $exception
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     */
+    protected function handleFileUploadException(FileUploadException $exception)
     {
         return $this->ok($exception->all());
     }

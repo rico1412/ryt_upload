@@ -2,8 +2,6 @@
 
 namespace App\Console;
 
-use App\Console\Commands\RouteListCommand;
-use App\Console\Commands\ServeCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -16,7 +14,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
-        ServeCommand::class,
     ];
 
     /**

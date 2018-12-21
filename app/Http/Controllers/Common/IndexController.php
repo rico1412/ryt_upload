@@ -2,39 +2,25 @@
 
 namespace App\Http\Controllers\Common;
 
-use App\Exceptions\AppException;
-use App\Exceptions\ArticleException;
-use App\Exceptions\RuntimeException;
 
 /**
  *
  *
- * @author 51004
+ * @author 秦昊
+ * Date: 2018/12/19 15:41
  */
 class IndexController extends BaseController
 {
     /**
-     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     *
+     *
+     * @author 秦昊
+     * Date: 2018/12/19 17:28
+     * @return \Illuminate\View\View
      */
-    public function now()
+    public function index()
     {
-        return $this->revert([
-            'now'      => get_now(),
-            'timezone' => config('app.timezone'),
-        ]);
+        return view('upload.index');
     }
 
-    /**
-     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
-     */
-    public function exceptions()
-    {
-        $items = [
-            'AppException'        => AppException::getCodeMaps(),
-            'RuntimeException'    => RuntimeException::getCodeMaps(),
-            'ArticleException'    => ArticleException::getCodeMaps(),
-        ];
-
-        return $this->revert($items);
-    }
 }

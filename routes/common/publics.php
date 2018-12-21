@@ -1,4 +1,4 @@
 <?php
 
-$router->get('time/now', 'IndexController@now');
-$router->get('exceptions/list', 'IndexController@exceptions');
+$router->get('index', 'IndexController@index');
+$router->post('upload', 'UploadController@upload');

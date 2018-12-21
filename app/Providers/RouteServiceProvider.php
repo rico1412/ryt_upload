@@ -16,7 +16,7 @@ class RouteServiceProvider extends ServiceProvider
                 'prefix'     => '/v1',
                 'namespace'  => 'App\Http\Controllers\Api\V1',
                 'files'      => [
-                    'routes/api/v1/question.php',
+//                    'routes/api/v1/question.php',
                 ],
                 'middleware' => ['request.expired', 'signed'],
             ],
@@ -24,12 +24,12 @@ class RouteServiceProvider extends ServiceProvider
         'common' => [
             'publics' => [
                 'domain'    => '*',
-                'prefix'    => '/common',
+                'prefix'    => '',
                 'namespace' => 'App\Http\Controllers\Common',
                 'files'     => [
                     'routes/common/publics.php',
                 ],
-                'middleware' => ['request.expired', 'signed'],
+                'middleware' => [],
             ]
         ],
         'admin' => [
@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
                 'prefix' => '/admin',
                 'namespace' => 'App\Http\Controllers\Admin',
                 'files' => [
-                    'routes/api/admin/question.php',
+//                    'routes/api/admin/question.php',
                 ],
             ],
         ],

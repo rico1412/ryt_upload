@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Modules\Question\Dao;
+namespace App\Modules\Upload\Dao;
 
 use App\Exceptions\FaqInfoException;
 use App\Kernel\Base\BaseDao as Dao;
