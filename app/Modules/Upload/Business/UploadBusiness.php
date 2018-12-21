@@ -159,7 +159,7 @@ class UploadBusiness extends BaseBusiness
                 $resWorkData[]  = $workInfo;
             }
         }
-        dd($resWorkData);
+//        dd($resWorkData);
 
         return $resWorkData;
     }

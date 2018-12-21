@@ -1,4 +1,8 @@
 <?php
 
-$router->get('index', 'IndexController@index');
-$router->post('upload', 'UploadController@upload');
+// 主页
+$router->get('/', 'IndexController@index');
+
+// export
+$router->post('export', 'UploadController@export');
+

@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 class UploadController extends BaseController
 {
     /**
-     *
+     * 导出处理好的Excel表
      *
      * @author 秦昊
      * Date: 2018/12/20 14:00
@@ -24,7 +24,7 @@ class UploadController extends BaseController
      * @throws \App\Exceptions\FileUploadException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function upload(Request $request, UploadBusiness $uploadBusiness)
+    public function export(Request $request, UploadBusiness $uploadBusiness)
     {
         $bankCode   = $request->get('bank_code');
         $excel      = $request->file('excel');

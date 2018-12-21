@@ -5,7 +5,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/upload" method="post" enctype="multipart/form-data">
+    <form action="/export" method="post" enctype="multipart/form-data">
         <div>
             <select name="bank_code" id="">
                 <option value="gfbank">广州广发手机银行</option>
@@ -34,10 +34,6 @@
             <input type="file" name="excel">
             <input type="submit" value="上传">
         </div>
-        <!-- <div>
-            上班时间：<input type="text" value="">
-            下班时间：<input type="text" value="">
-        </div> -->
     </form>
 </body>
 </html>
