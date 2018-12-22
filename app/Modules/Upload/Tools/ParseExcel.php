@@ -7,6 +7,7 @@ use App\Modules\Upload\Constant\OriginExcelTitle;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -151,10 +152,11 @@ class ParseExcel
      * 处理 sheet
      *
      * @author 秦昊
-     * Date: 2018/12/17 19:44
+     * Date: 2018/12/22 17:22
      * @param Worksheet $sheet
      * @return array
      * @throws FileUploadException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     protected function handleSheet(Worksheet $sheet)
     {
@@ -197,6 +199,11 @@ class ParseExcel
                     $cellValue = strtotime($cell->getFormattedValue());
                 } else {
                     $cellValue = $cell->getValue();
+
+                    if ($cellValue instanceof RichText)
+                    {
+                        $cellValue = $cellValue->getPlainText();
+                    }
                 }
 
                 $linkRow[$mv] = $cellValue;
