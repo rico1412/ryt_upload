@@ -58,9 +58,10 @@ class UploadBusiness extends BaseBusiness
      */
     public function getResExcel($bankCode, UploadedFile $file)
     {
-        $fileName = $file->getFilename();
+        $fileName   = $file->getClientOriginalName();
+        $fileExt    = $file->getClientOriginalExtension();
 
-        if ($fileName != $bankCode) throw new FileUploadException(600005);
+        if ($fileName != "{$bankCode}.{$fileExt}") throw new FileUploadException(600005);
 
         $resExcelData   = $this->getResExcelData($bankCode, $file);
 
