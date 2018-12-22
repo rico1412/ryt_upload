@@ -155,7 +155,6 @@ class ParseExcel
      * @param Worksheet $sheet
      * @return array
      * @throws FileUploadException
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     protected function handleSheet(Worksheet $sheet)
     {

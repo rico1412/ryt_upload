@@ -61,7 +61,7 @@ return [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'localhost'),
             'port'      => env('DB_PORT', 3306),
-            'database'  => env('DB_DATABASE', 'cfb_question'),
+            'database'  => env('DB_DATABASE', 'ryt_upload'),
             'username'  => env('DB_USERNAME', 'forge'),
             'password'  => env('DB_PASSWORD', ''),
             'charset'   => env('DB_CHARSET', 'utf8mb4'),

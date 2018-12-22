@@ -24,6 +24,34 @@ class WorkTimeDao extends BaseDao
     }
 
     /**
+     * 同步项目信息
+     *
+     * @author 秦昊
+     * Date: 2018/12/21 23:22
+     * @param array $newProjectList
+     */
+    public function syncProjects(array $newProjectList)
+    {
+        $storeList = [];
+
+        foreach ($newProjectList as $bankCode => $projectInfo)
+        {
+            if ($oldProjectInfo = $this->findInfoByBankCode($bankCode))
+            {
+                $oldProjectInfo->fill($projectInfo);
+                $oldProjectInfo->save();
+            } else {
+                $storeList[]    = $projectInfo;
+            }
+        }
+
+        if ($storeList)
+        {
+            $this->insertMulti($storeList);
+        }
+    }
+
+    /**
      * 根据项目代号查询
      *
      * @author 秦昊

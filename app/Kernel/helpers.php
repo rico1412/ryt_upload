@@ -3,6 +3,37 @@
 if (!function_exists('get_page_size')) {
 
     /**
+     * 时分秒转换为秒数
+     *
+     * @author 秦昊
+     * Date: 2018/12/22 07:53
+     * @param $time
+     * @return float|int
+     */
+    function time_to_second($time)
+    {
+        if ($time && ($timeArr = explode(':', $time))
+            && ($arrLength = count($timeArr)) >= 2)
+        {
+            $h = (int)$timeArr[0];
+            $m = (int)$timeArr[1];
+            $s = 0;
+
+            if ($arrLength == 3)
+            {
+                $s = (int)$timeArr[2];
+            }
+
+            return $h * 3600 + $m * 60 + $s;
+        }
+
+        return 0;
+    }
+}
+
+if (!function_exists('get_page_size')) {
+
+    /**
      * 获取每页默认记录数
      * User: lizhenhai
      * Date: 2018/7/20 0020

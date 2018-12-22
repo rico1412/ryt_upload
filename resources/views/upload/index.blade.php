@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>RYTong</title>
+    <link href='/favicon.ico' rel='shortcut icon' type='image/x-icon'>
 </head>
 <body>
     <form action="/export" method="post" enctype="multipart/form-data">

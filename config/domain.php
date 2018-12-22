@@ -1,6 +1,6 @@
 <?php
 
 return array(
-    'admin' => env('QUESTION_ADMIN_DOMAIN', 'question'),
-    'api'   => env('QUESTION_API_DOMAIN', 'question'),
+    'admin' => env('UPLOAD_ADMIN_DOMAIN', 'upload'),
+    'api'   => env('UPLOAD_API_DOMAIN', 'upload'),
 );

@@ -25,5 +25,8 @@ class FileUploadException extends BaseException
         600004 => [
             'message' => '文件格式错误！',
         ],
+        600005 => [
+            'message' => '上传的文件名与项目代号不一致！',
+        ],
     ];
 }
