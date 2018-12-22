@@ -9,6 +9,7 @@ use App\Modules\Upload\Constant\ResExcelTitle;
 use App\Modules\Upload\Constant\Week;
 use App\Modules\Upload\Dao\WorkTimeDao;
 use App\Modules\Upload\Tools\ParseExcel;
+use Illuminate\Http\UploadedFile;
 
 /**
  *
@@ -50,14 +51,18 @@ class UploadBusiness extends BaseBusiness
      * @author 秦昊
      * Date: 2018/12/21 09:41
      * @param $bankCode
-     * @param $excel
+     * @param $file
      * @return array
      * @throws FileUploadException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function getResExcel($bankCode, $excel)
+    public function getResExcel($bankCode, UploadedFile $file)
     {
-        $resExcelData   = $this->getResExcelData($excel, $bankCode);
+        $fileName = $file->getFilename();
+
+        if ($fileName != $bankCode) throw new FileUploadException(600005);
+
+        $resExcelData   = $this->getResExcelData($bankCode, $file);
 
         return $resExcelData;
     }
@@ -67,18 +72,18 @@ class UploadBusiness extends BaseBusiness
      *
      * @author 秦昊
      * Date: 2018/12/21 09:11
-     * @param $excel
+     * @param $file
      * @param $bankCode
      * @return array
      * @throws FileUploadException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    private function getResExcelData($excel, $bankCode)
+    private function getResExcelData($bankCode, UploadedFile $file)
     {
         $bankInfo = $this->workTimeDao->findInfoByBankCode($bankCode);
 
-        $filePath       = $this->getFilePath($excel);
-        $fileExt        = $excel->getClientOriginalExtension();
+        $filePath       = $this->getFilePath($file);
+        $fileExt        = $file->getClientOriginalExtension();
 
         $titleMap       = array_flip(OriginExcelTitle::getNames());
 
