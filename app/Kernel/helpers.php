@@ -1,6 +1,59 @@
 <?php
 
-if (!function_exists('get_page_size')) {
+if (!function_exists('get_file_path'))
+{
+    /**
+     * 获取Excel文件路径
+     *
+     * @author 秦昊
+     * Date: 2018/12/17 15:17
+     * @param $file
+     * @return string
+     * @throws \App\Exceptions\FileUploadException
+     */
+    function get_file_path(\Illuminate\Http\UploadedFile $file)
+    {
+        if (!$file || !$file->isValid()) throw new \App\Exceptions\FileUploadException(600000);
+
+        $fileName = get_now() . '.' . $file->getClientOriginalExtension();
+
+        $file->move(storage_path('files/excel/'), $fileName);
+
+        $filePath = storage_path('files/excel/') . $fileName;
+
+        return $filePath;
+    }
+}
+
+if (!function_exists('get_file_name'))
+{
+    /**
+     * 获取原始文件名
+     *
+     * @author 秦昊
+     * Date: 2018/12/23 11:55
+     * @param \Illuminate\Http\UploadedFile $file
+     * @return mixed|null|string
+     * @throws \App\Exceptions\FileUploadException
+     */
+    function get_file_name(\Illuminate\Http\UploadedFile $file)
+    {
+        if (!$file || !$file->isValid()) throw new \App\Exceptions\FileUploadException(600000);
+
+        $fileName   = $file->getClientOriginalName();
+
+        if (strpos($fileName, '.'))
+        {
+            $fileNameArr    = explode('.', $fileName);
+
+            $fileName       = array_shift($fileNameArr);
+        }
+
+        return $fileName;
+    }
+}
+
+if (!function_exists('time_to_second')) {
 
     /**
      * 时分秒转换为秒数

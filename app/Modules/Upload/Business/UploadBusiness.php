@@ -58,12 +58,13 @@ class UploadBusiness extends BaseBusiness
      */
     public function getResExcel($bankCode, UploadedFile $file)
     {
-        $fileName   = $file->getClientOriginalName();
-        $fileExt    = $file->getClientOriginalExtension();
+        $fileName   = get_file_name($file);
 
-        if ($fileName != "{$bankCode}.{$fileExt}") throw new FileUploadException(600005);
+        if ($fileName != $bankCode) throw new FileUploadException(600005);
 
-        $resExcelData   = $this->getResExcelData($bankCode, $file);
+        $parseData      = $this->getParseData($file);
+
+        $resExcelData   = $this->getResExcelData($bankCode, $parseData);
 
         return $resExcelData;
     }
@@ -72,18 +73,15 @@ class UploadBusiness extends BaseBusiness
      *
      *
      * @author 秦昊
-     * Date: 2018/12/21 09:11
-     * @param $file
-     * @param $bankCode
+     * Date: 2018/12/23 11:52
+     * @param UploadedFile $file
      * @return array
      * @throws FileUploadException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    private function getResExcelData($bankCode, UploadedFile $file)
+    private function getParseData(UploadedFile $file)
     {
-        $bankInfo = $this->workTimeDao->findInfoByBankCode($bankCode);
-
-        $filePath       = $this->getFilePath($file);
+        $filePath       = get_file_path($file);
         $fileExt        = $file->getClientOriginalExtension();
 
         $titleMap       = array_flip(OriginExcelTitle::getNames());
@@ -95,10 +93,26 @@ class UploadBusiness extends BaseBusiness
 //        dd($workData);
 //        dd($parseExcel->getWorkDayList());
 
+        return $workData;
+    }
+
+    /**
+     * 获取解析后的数据
+     *
+     * @author 秦昊
+     * Date: 2018/12/21 09:11
+     * @param $bankCode
+     * @param array $parseData
+     * @return array
+     */
+    private function getResExcelData($bankCode, array $parseData)
+    {
+        $bankInfo = $this->workTimeDao->findInfoByBankCode($bankCode);
+
         $workTempData   = [];
         $onDutyTimeArr  = [];
 
-        foreach ($workData as $workInfo)
+        foreach ($parseData as $workInfo)
         {
 //            dump($workInfo);
             $dayTime    = $workInfo[OriginExcelTitle::DAY_TIME];
@@ -136,24 +150,27 @@ class UploadBusiness extends BaseBusiness
 
         foreach ($workTempData as $workTempItem)
         {
+            $workDayCount = count($workTempItem);
+
             foreach ($workTempItem as $dayTime => $workInfo)
             {
-//                dump($workInfo);
                 $itemOnDutyTime = $workInfo[ResExcelTitle::ON_DUTY_TIME];
                 $workInfo[ResExcelTitle::ON_DUTY_TIME]  = date('H:i:s', $itemOnDutyTime);
+
                 $itemOffDutyTime= $workInfo[ResExcelTitle::OFF_DUTY_TIME];
                 $workInfo[ResExcelTitle::OFF_DUTY_TIME] = date('H:i:s', $itemOffDutyTime);
+
                 $week           = $workInfo[ResExcelTitle::WEEK];
 
+                $overTime   = 0;
+                $lateTime   = 0;
+                $status     = '';
                 switch ($week)
                 {
                     case Week::Saturday:
                     case Week::Sunday:
-                        // 不计算迟到，只计算加班
+                        // 周末只计算加班
                         $overTime = $bankInfo->getWeekendOverTime($itemOnDutyTime, $itemOffDutyTime);
-                        $workInfo[ResExcelTitle::OVER_TIME] = $overTime;
-                        $workInfo[ResExcelTitle::LATE_TIME] = '';
-                        $workInfo[ResExcelTitle::STATUS]    = '';
                         break;
                     case Week::Monday:
                     case Week::Tuesday:
@@ -161,51 +178,29 @@ class UploadBusiness extends BaseBusiness
                     case Week::Thursday:
                     case Week::Friday:
                         // 加班
-                        $overTime = $bankInfo->getNormalOverTime($itemOffDutyTime);
-                        $workInfo[ResExcelTitle::OVER_TIME] = $overTime;
+                        $overTime   = $bankInfo->getNormalOverTime($itemOffDutyTime);
 
                         // 计算迟到
-                        $lateTime = $bankInfo->getLateTime($itemOnDutyTime);
-                        $workInfo[ResExcelTitle::LATE_TIME] = $lateTime;
+                        $lateTime   = $bankInfo->getLateTime($itemOnDutyTime);
 
                         // 是否有异常
-                        $status                             = $bankInfo->getStatus($itemOnDutyTime, $itemOffDutyTime);
-                        $workInfo[ResExcelTitle::STATUS]    = $status;
+                        $status     = $bankInfo->getStatus($itemOnDutyTime, $itemOffDutyTime);
                         break;
                 }
+
+                $workInfo[ResExcelTitle::OVER_TIME] = $overTime == 0 ? '' : $overTime;
+                $workInfo[ResExcelTitle::LATE_TIME] = $lateTime == 0 ? '' : $lateTime;
+                $workInfo[ResExcelTitle::STATUS]    = $status;
+
+                $workInfo[ResExcelTitle::WORK_DAYS]    = $workDayCount;
 
                 $resWorkData[]  = $workInfo;
             }
         }
+
 //        dd($resWorkData);
 
         return $resWorkData;
-    }
-
-
-
-    /**
-     * 获取Excel文件路径
-     *
-     * @author 秦昊
-     * Date: 2018/12/17 15:17
-     * @param $file
-     * @return string
-     * @throws FileUploadException
-     */
-    private function getFilePath($file)
-    {
-        if (!$file || !$file->isValid()) {
-            throw new FileUploadException(600000);
-        }
-
-        $fileName = get_now() . '.' . $file->getClientOriginalExtension();
-
-        $file->move(storage_path('files/excel/'), $fileName);
-
-        $filePath = storage_path('files/excel/') . $fileName;
-
-        return $filePath;
     }
 
 }
