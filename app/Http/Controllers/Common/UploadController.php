@@ -26,13 +26,10 @@ class UploadController extends BaseController
      */
     public function export(Request $request, UploadBusiness $uploadBusiness)
     {
-        $bankCode   = $request->get('bank_code');
         $excel      = $request->file('excel');
 
         $fileName   = get_file_name($excel) . '_res';
-
-        $data = $uploadBusiness->getResExcel($bankCode, $excel);
-
+        $data       = $uploadBusiness->getResData($excel);
         $headList   = array_values(ResExcelTitle::getNames());
 
         csv_export($data, $headList, $fileName);
