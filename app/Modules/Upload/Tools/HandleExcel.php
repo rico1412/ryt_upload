@@ -26,7 +26,7 @@ class HandleExcel
      * @throws FileUploadException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public static function getParseData(UploadedFile $file)
+    public function getParseData(UploadedFile $file)
     {
         $filePath       = get_file_path($file);
         $fileExt        = $file->getClientOriginalExtension();
@@ -52,7 +52,7 @@ class HandleExcel
      * @param array $parseData
      * @return array
      */
-    public static function getResExcelData($bankInfo, array $parseData)
+    public function getResExcelData($bankInfo, array $parseData)
     {
         $workTempData   = [];
         $onDutyTimeArr  = [];

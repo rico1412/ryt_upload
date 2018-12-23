@@ -22,12 +22,22 @@ class UploadBusiness extends BaseBusiness
     protected $workTimeDao;
 
     /**
+     * @var HandleExcel
+     */
+    protected $handleExcel;
+
+    /**
      * UploadBusiness constructor.
      * @param WorkTimeDao $workTimeDao
+     * @param HandleExcel $handleExcel
      */
-    public function __construct(WorkTimeDao $workTimeDao)
+    public function __construct(
+        WorkTimeDao $workTimeDao,
+        HandleExcel $handleExcel
+    )
     {
-        $this->workTimeDao = $workTimeDao;
+        $this->workTimeDao  = $workTimeDao;
+        $this->handleExcel  = $handleExcel;
     }
 
     /**
@@ -35,7 +45,7 @@ class UploadBusiness extends BaseBusiness
      *
      * @author 秦昊
      * Date: 2018/12/21 09:41
-     * @param $file
+     * @param UploadedFile $file
      * @return array
      * @throws FileUploadException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
@@ -49,9 +59,9 @@ class UploadBusiness extends BaseBusiness
             throw new FileUploadException(600005);
         }
 
-        $parseData      = HandleExcel::getParseData($file);
+        $parseData      = $this->handleExcel->getParseData($file);
 
-        $resExcelData   = HandleExcel::getResExcelData($bankInfo, $parseData);
+        $resExcelData   = $this->handleExcel->getResExcelData($bankInfo, $parseData);
 
         return $resExcelData;
     }
