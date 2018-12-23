@@ -63,6 +63,11 @@ class ResExcelTitle extends BaseConstant
     public const STATUS         = 'status';
 
     /**
+     * 上班天数
+     */
+    public const WORK_DAYS      = 'work_days';
+
+    /**
      * @author 秦昊
      * Date: 2018/12/19 17:54
      * @return array|mixed
@@ -80,6 +85,7 @@ class ResExcelTitle extends BaseConstant
             self::OVER_TIME     => '加班时间（小时）',
             self::LATE_TIME     => '迟到时间（分）',
             self::STATUS        => '状态',
+            self::WORK_DAYS     => '上班天数',
         ];
     }
 }
