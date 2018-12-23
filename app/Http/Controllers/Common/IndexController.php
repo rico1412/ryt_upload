@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\Common;
-use App\Modules\Upload\Business\UploadBusiness;
-
 
 /**
  *
@@ -17,14 +15,11 @@ class IndexController extends BaseController
      *
      * @author 秦昊
      * Date: 2018/12/21 19:20
-     * @param UploadBusiness $uploadBusiness
      * @return \Illuminate\View\View
      */
-    public function index(UploadBusiness $uploadBusiness)
+    public function index()
     {
-        $projectList = $uploadBusiness->getProjectList();
-
-        return view('upload.index', compact('projectList'));
+        return view('upload.upload');
     }
 
 }
