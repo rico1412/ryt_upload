@@ -11,7 +11,7 @@
         html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
 
         body{padding:100px;font-size: 14px;}
-        h1{font-size: 26px;}
+        h1{font-size: 56px;}
         p{font-size: 14px; margin-top: 10px;}
         pre{background:#eee;border:1px solid #ddd;border-left:4px solid #f60;padding:15px;margin-top: 15px;}
         h2{font-size: 20px;margin-top: 20px;}
