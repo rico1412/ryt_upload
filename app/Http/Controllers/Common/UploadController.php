@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Common;
 
+use App\Exceptions\FileUploadException;
 use App\Modules\Upload\Business\UploadBusiness;
 use App\Modules\Upload\Constant\ResExcelTitle;
 use Illuminate\Http\Request;
@@ -21,18 +22,27 @@ class UploadController extends BaseController
      * Date: 2018/12/20 14:00
      * @param Request $request
      * @param UploadBusiness $uploadBusiness
+     * @return array|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      * @throws \App\Exceptions\FileUploadException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function export(Request $request, UploadBusiness $uploadBusiness)
     {
+        app('validator')->make($request->all(), [
+            'excel' => 'required',
+        ], [
+            'excel.required' => 'Excel文件上传错误',
+        ])->validate();
+
         $excel      = $request->file('excel');
 
         $fileName   = get_file_name($excel) . '_res';
         $data       = $uploadBusiness->getResData($excel);
         $headList   = array_values(ResExcelTitle::getNames());
 
-        csv_export($data, $headList, $fileName);
+        $filePath = config('domain.common') . csv_export($data, $headList, $fileName);
+
+        return $this->revert(compact('filePath'));
     }
 
 }

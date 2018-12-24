@@ -169,9 +169,10 @@ if (!function_exists('csv_export'))
      *
      * @author 秦昊
      * Date: 2018/11/30 17:15
-     * @param array $data       导出数据
-     * @param array $headList   第一行,列名
+     * @param array $data 导出数据
+     * @param array $headList 第一行,列名
      * @param $fileName
+     * @return string
      */
     function csv_export(array $data = [], array $headList = [], $fileName)
     {
@@ -180,7 +181,9 @@ if (!function_exists('csv_export'))
         header('Cache-Control: max-age=0');
 
         //打开PHP文件句柄,php://output 表示直接输出到浏览器
-        $fp = fopen('php://output', 'a');
+//        $fp = fopen('php://output', 'a');
+        @unlink($fileName.'.csv');
+        $fp = fopen($fileName.'.csv', 'a');
 
         //输出Excel列名信息
         foreach ($headList as $key => $value)
@@ -219,6 +222,12 @@ if (!function_exists('csv_export'))
 
             fputcsv($fp, $row);
         }
+
+        fclose($fp);
+
+        $filePath = $fileName.'.csv';
+
+        return $filePath;
     }
 }
 

@@ -19,7 +19,7 @@ class IndexController extends BaseController
      */
     public function index()
     {
-        return view('upload.upload');
+        return view('upload.upload', ['title' => '考勤文件转换系统']);
     }
 
 }
