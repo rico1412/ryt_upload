@@ -66,7 +66,7 @@ class HandleExcel
             $resWorkInfo                                = [];
             $resWorkInfo[ResExcelTitle::NAME]           = $name;
             $resWorkInfo[ResExcelTitle::JOB_NUM]        = $workInfo[OriginExcelTitle::JOB_NUM];
-            $resWorkInfo[ResExcelTitle::PROJECT_NAME]   = $workInfo[OriginExcelTitle::PROJECT_NAME];
+            $resWorkInfo[ResExcelTitle::PROJECT_NAME]   = array_get($workInfo, OriginExcelTitle::PROJECT_NAME);
             $resWorkInfo[ResExcelTitle::WEEK]           = get_week($dayTime);
             $resWorkInfo[ResExcelTitle::DAY]            = $dayTime;
 
@@ -136,7 +136,7 @@ class HandleExcel
                 $workInfo[ResExcelTitle::LATE_TIME] = $lateTime == 0 ? '' : $lateTime;
                 $workInfo[ResExcelTitle::STATUS]    = $status;
 
-                $workInfo[ResExcelTitle::WORK_DAYS]    = $workDayCount;
+                $workInfo[ResExcelTitle::WORK_DAYS] = $workDayCount;
 
                 $resWorkData[]  = $workInfo;
             }
