@@ -67,10 +67,11 @@ class WorkTime extends Model
      */
     public function getLateTime($onDutyTime)
     {
-        $onDutyTime = $this->formatOnDutyTime($onDutyTime);
+        $onDutyTime = $this->formatDutyTime($onDutyTime);
 
-        if (($value = ($onDutyTime - $this->on_duty_time)) > 0)
+        if (($value = $onDutyTime - $this->on_duty_time) > 0)
         {
+            dd($value);
             return floor($value / 60);
         }
 
@@ -82,12 +83,12 @@ class WorkTime extends Model
      *
      * @author 秦昊
      * Date: 2018/12/20 16:09
-     * @param $onDutyTime
+     * @param $dutyTime
      * @return float|int
      */
-    private function formatOnDutyTime($onDutyTime)
+    private function formatDutyTime($dutyTime)
     {
-        return $onDutyTime % (3600 * 24) + 8 * 3600;
+        return ($dutyTime + 8 * 3600) % (3600 * 24);
     }
 
     /**
@@ -101,7 +102,7 @@ class WorkTime extends Model
      */
     public function getNormalOverTime($offDutyTime)
     {
-        $offDutyTime = $this->formatOffDutyTime($offDutyTime);
+        $offDutyTime = $this->formatDutyTime($offDutyTime);
 
         if (($value = ($offDutyTime - $this->off_duty_time) / 3600 - 1) > 0)
         {
@@ -113,19 +114,6 @@ class WorkTime extends Model
         }
 
         return '';
-    }
-
-    /**
-     * 格式化下班时间
-     *
-     * @author 秦昊
-     * Date: 2018/12/20 16:09
-     * @param $offDutyTime
-     * @return float|int
-     */
-    private function formatOffDutyTime($offDutyTime)
-    {
-        return $offDutyTime % (3600 * 24) + 8 * 3600;
     }
 
     /**
@@ -161,8 +149,8 @@ class WorkTime extends Model
      */
     public function getStatus($onDutyTime, $offDutyTime)
     {
-        $onDutyTime     = $this->formatOnDutyTime($onDutyTime);
-        $offDutyTime    = $this->formatOffDutyTime($offDutyTime);
+        $onDutyTime     = $this->formatDutyTime($onDutyTime);
+        $offDutyTime    = $this->formatDutyTime($offDutyTime);
 
         if (
             $onDutyTime == $offDutyTime
