@@ -71,7 +71,6 @@ class WorkTime extends Model
 
         if (($value = $onDutyTime - $this->on_duty_time) > 0)
         {
-            dd($value);
             return floor($value / 60);
         }
 
