@@ -167,10 +167,11 @@ class ParseExcel
 
             foreach ($rv->getCellIterator() as $key => $value)
             {
-                if(isset($this->titleMap[$value->getValue()]))
+                if ($headValue = array_get($this->titleMap, $value->getValue()))
                 {
-                    $headValue                          = $this->titleMap[$value->getValue()];
-                    $this->headMap[$key]                = $headValue;
+                    $this->headMap[$key] = $headValue;
+                } else {
+                    throw new FileUploadException(600003, ['message' => '表头：'. $value->getValue() .' 不符合规范']);
                 }
             }
 
@@ -197,6 +198,7 @@ class ParseExcel
                 {
                     // 获取时间戳
                     $cellValue = strtotime($cell->getFormattedValue());
+
                 } else {
                     $cellValue = $cell->getValue();
 

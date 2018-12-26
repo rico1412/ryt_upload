@@ -48,7 +48,7 @@ class OriginExcelTitle extends BaseConstant
             self::NAME          => '姓名',
             self::JOB_NUM       => '工号',
             self::PROJECT_NAME  => '所属项目',
-            self::DUTY_TIME     => '考勤时间',
+            self::DUTY_TIME     => '考勤记录',
         ];
     }
 }

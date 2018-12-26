@@ -202,6 +202,10 @@
                                         {
                                             errMsg = data.data.excel[0];
 
+                                        } else if (data.data.message)
+                                        {
+                                            errMsg = data.data.message;
+
                                         } else if (data.message)
                                         {
                                             errMsg = data.message;
