@@ -167,7 +167,11 @@ class ParseExcel
 
             foreach ($rv->getCellIterator() as $key => $value)
             {
-                if ($headValue = array_get($this->titleMap, $value->getValue()))
+                $cellValue = $value->getValue();
+
+                if (empty($cellValue)) continue;
+
+                if ($headValue = array_get($this->titleMap, $cellValue))
                 {
                     $this->headMap[$key] = $headValue;
                 } else {

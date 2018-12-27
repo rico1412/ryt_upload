@@ -76,7 +76,7 @@
             layer.confirm('确定删除【' + data.project_name + '】吗？', function(index)
             {
                 $.ajax({
-                    url: "{{ config('domain.common') }}/bank/info/del?id=" + data.id,
+                    url: "{{ config('domain.common') }}banks/info/del?id=" + data.id,
                     success: function(res) {
                         if (res.code === 0) {
                             obj.del();
@@ -84,8 +84,12 @@
                             layer.msg('【' + data.project_name + '】删除成功！');
                         } else {
                             layer.msg(res.msg);
-                            // layer.closeAll();
                         }
+                    },
+                    error: function (err) {
+                        data = err.responseJSON;
+                        console.log(data);
+                        layer.alert(data.message);
                     }
                 });
 
