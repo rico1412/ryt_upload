@@ -28,6 +28,19 @@ class ProjectBusiness extends BaseBusiness
     }
 
     /**
+     * 获取所有项目信息
+     *
+     * @author 秦昊
+     * Date: 2018/12/26 15:44
+     * @param array $columns
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getBankInfoList(array $columns = ['*'])
+    {
+        return $this->workTimeDao->all($columns);
+    }
+
+    /**
      *
      *
      * @author 秦昊
@@ -61,4 +74,18 @@ class ProjectBusiness extends BaseBusiness
 
         $this->workTimeDao->syncProjects($projectList);
     }
+
+    /**
+     * 删除项目信息
+     *
+     * @author 秦昊
+     * Date: 2018/12/27 13:59
+     * @param $id
+     * @return mixed
+     */
+    public function delBankInfo($id)
+    {
+        return $this->workTimeDao->destroy($id);
+    }
+
 }

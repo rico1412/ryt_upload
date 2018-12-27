@@ -84,6 +84,28 @@ if (!function_exists('time_to_second')) {
     }
 }
 
+if (!function_exists('second_to_time')) {
+
+    /**
+     * 秒数转换为时分
+     *
+     * @author 秦昊
+     * Date: 2018/12/22 07:53
+     * @param $second
+     * @return string
+     */
+    function second_to_time($second)
+    {
+        $hour   = sprintf('%02d', $second % (3600 * 24) / 3600);
+
+        $m      = sprintf('%02d', $second % 3600 / 60);
+
+        $time   = "{$hour}:{$m}";
+
+        return $time;
+    }
+}
+
 if (!function_exists('get_page_size')) {
 
     /**

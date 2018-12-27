@@ -58,6 +58,38 @@ class WorkTime extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $appends = [
+        'on_duty_time_str',
+        'off_duty_time_str',
+    ];
+
+    /**
+     * 返回格式化的上班时间
+     *
+     * @author 秦昊
+     * Date: 2018/12/27 14:00
+     * @return string
+     */
+    public function getOnDutyTimeStrAttribute()
+    {
+        return second_to_time($this->on_duty_time);
+    }
+
+    /**
+     * 返回格式化的下班时间
+     *
+     * @author 秦昊
+     * Date: 2018/12/27 14:00
+     * @return string
+     */
+    public function getOffDutyTimeStrAttribute()
+    {
+        return second_to_time($this->off_duty_time);
+    }
+
+    /**
      * 工作日迟到
      *
      * @author 秦昊
