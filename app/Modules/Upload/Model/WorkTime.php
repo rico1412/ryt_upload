@@ -26,6 +26,7 @@ class WorkTime extends Model
      */
     protected $fillable = [
         'bank_code',
+        'project_name',
         'on_duty_time',
         'off_duty_time',
     ];
@@ -36,6 +37,7 @@ class WorkTime extends Model
     protected $casts = [
         'id'                => 'integer',
         'bank_code'         => 'string',
+        'project_name'      => 'string',
         'on_duty_time'      => 'integer',
         'off_duty_time'     => 'integer',
 
