@@ -84,7 +84,6 @@
                             obj.del();
                             layer.close(index);
                             layer.msg('【' + data.project_name + '】删除成功！');
-                            location.reload();
                         } else {
                             layer.msg(res.msg);
                         }
@@ -116,7 +115,6 @@
                     if (res.code === 0) {
                         obj.del();
                         layer.close(index);
-                        layer.msg('【' + data.project_name + '】删除成功！');
                         location.reload();
                     } else {
                         for (i in res.data)
