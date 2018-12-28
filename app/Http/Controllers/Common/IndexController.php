@@ -60,4 +60,25 @@ class IndexController extends BaseController
         return $this->revert($projectBusiness->delBankInfo($id));
     }
 
+    /**
+     *
+     *
+     * @author 秦昊
+     * Date: 2018/12/28 12:52
+     * @param Request $request
+     * @param ProjectBusiness $projectBusiness
+     * @return array|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \App\Exceptions\FaqInfoException
+     */
+    public function updateBankInfo(Request $request, ProjectBusiness $projectBusiness)
+    {
+        $id         = $request->get('id');
+
+        $payload    = $request->only(['bank_code', 'project_name', 'on_duty_time_str', 'off_duty_time_str']);
+
+        $res        = $projectBusiness->updateBankInfo($id, $payload);
+
+        return $this->revert($res);
+    }
+
 }

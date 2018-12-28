@@ -35,26 +35,28 @@
 <div style="height: 300px"></div>
 
 <div style="width:762px;margin: 0 auto;">
-    <table class="layui-table" lay-data="{width: 762, url:'/bank/info/list', id:'idTest'}" lay-filter="demo">
+    <table class="layui-table" lay-data="{width: 800, url:'/bank/info/list', id:'idTest'}" lay-filter="demo">
         <thead>
         <tr>
             {{--<th lay-data="{type:'checkbox', fixed: 'left'}"></th>--}}
-            <th lay-data="{type:'numbers', width:80, align:'center'}">序号</th>
-            <th lay-data="{field:'bank_code', width:120}">项目别名</th>
-            <th lay-data="{field:'project_name', width:200}">项目名</th>
-            <th lay-data="{field:'on_duty_time_str', width:120, align:'center'}">上班时间</th>
-            <th lay-data="{field:'off_duty_time_str', width:120, align:'center'}">下班时间</th>
-            <th lay-data="{width:120, align:'center', toolbar: '#barDemo'}">操作</th>
+            <th lay-data="{type: 'numbers', width: '10%', align:'center', fixed: 'left'}">序号</th>
+            <th lay-data="{field: 'bank_code', width: '17.5%', edit: 'text'}">项目别名</th>
+            <th lay-data="{field: 'project_name', width: '27.5%', edit: 'text'}">项目名</th>
+            <th lay-data="{field: 'on_duty_time_str', width: '17.5%', align:'center', edit: 'text'}">上班时间</th>
+            <th lay-data="{field: 'off_duty_time_str', width: '17.5%', align:'center', edit: 'text'}">下班时间</th>
+            <th lay-data="{toolbar: '#barDemo', width: '10%', align:'center', fixed: 'right'}">操作</th>
         </tr>
         </thead>
     </table>
 </div>
+<div id="footer"></div>
 
 <script type="text/html" id="barDemo">
     {{--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>--}}
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    {{--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>--}}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+
 </body>
 
 
@@ -76,22 +78,57 @@
             layer.confirm('确定删除【' + data.project_name + '】吗？', function(index)
             {
                 $.ajax({
-                    url: "{{ config('domain.common') }}bank/info/del?id=" + data.id,
-                    success: function(res) {
+                    url: "{{ config('domain.common') }}bank/info/del?id=" + data.id
+                    ,success: function(res) {
                         if (res.code === 0) {
                             obj.del();
                             layer.close(index);
                             layer.msg('【' + data.project_name + '】删除成功！');
+                            location.reload();
                         } else {
                             layer.msg(res.msg);
                         }
-                    },
-                    error: function (err) {
+                    }
+                    ,error: function (err) {
                         data = err.responseJSON;
                         layer.alert(data.message);
                     }
                 });
 
+            });
+        }
+
+        function doUpdate(obj)
+        {
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            // layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+
+            var postData    = {};
+            postData[field] = value;
+
+            $.ajax({
+                type: 'post'
+                ,url: "{{ config('domain.common') }}bank/info/update?id=" + data.id
+                ,data: postData
+                ,success: function(res) {
+                    if (res.code === 0) {
+                        obj.del();
+                        layer.close(index);
+                        layer.msg('【' + data.project_name + '】删除成功！');
+                        location.reload();
+                    } else {
+                        for (i in res.data)
+                        {
+                            layer.msg(res.data[i][0])
+                        }
+                    }
+                }
+                ,error: function (err) {
+                    data = err.responseJSON;
+                    layer.alert(data.message);
+                }
             });
         }
 
@@ -118,6 +155,13 @@
                 {
                     layer.alert('编辑行：<br>'+ JSON.stringify(data))
                 }
+            });
+
+            table.on('edit(demo)', function (obj)
+            {
+                doUpdate(obj);
+
+                // location.reload();
             });
 
             // var $ = layui.$, active = {

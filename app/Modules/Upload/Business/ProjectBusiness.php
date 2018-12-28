@@ -88,4 +88,44 @@ class ProjectBusiness extends BaseBusiness
         return $this->workTimeDao->destroy($id);
     }
 
+    /**
+     *
+     *
+     * @author 秦昊
+     * Date: 2018/12/28 12:51
+     * @param $id
+     * @param array $params
+     * @return mixed
+     * @throws \App\Exceptions\FaqInfoException
+     */
+    public function updateBankInfo($id, array $params)
+    {
+        app('validator')->make($params, [
+            'bank_code'             => 'string',
+            'project_name'          => 'string',
+            'on_duty_time_str'      => 'regex:/^[0-1][0-9]:[0-5][0-9]$/',
+            'off_duty_time_str'     => 'regex:/^1[7-9]:[0-5][0-9]$/',
+        ], [
+            'on_duty_time_str.regex'    => '上班时间格式错误',
+            'off_duty_time_str.regex'   => '下班时间格式错误',
+        ])->validate();
+
+        if (array_key_exists('on_duty_time_str', $params)
+            || array_key_exists('off_duty_time_str', $params))
+        {
+            if ($onDutyTimeStr  = array_pull($params, 'on_duty_time_str'))
+            {
+                $onDutyTime = time_to_second($onDutyTimeStr);
+                $params['on_duty_time'] = $onDutyTime;
+
+            } else if ($offDutyTimeStr = array_pull($params, 'off_duty_time_str'))
+            {
+                $offDutyTime = time_to_second($offDutyTimeStr);
+                $params['off_duty_time'] = $offDutyTime;
+            }
+        }
+
+        return $this->workTimeDao->update($id, $params);
+    }
+
 }
