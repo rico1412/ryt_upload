@@ -202,7 +202,7 @@
                                         {
                                             errMsg = data.data.excel[0];
 
-                                        } else if (data.data.message)
+                                        } else if (data.data && data.data.message)
                                         {
                                             errMsg = data.data.message;
 
