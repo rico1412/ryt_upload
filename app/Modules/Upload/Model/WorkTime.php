@@ -126,7 +126,7 @@ class WorkTime extends Model
 
     /**
      * 工作日加班
-     * 下班1小时候开始计算加班
+     * 加班到21点后才算加班
      *
      * @author 秦昊
      * Date: 2018/12/20 15:38
@@ -137,7 +137,7 @@ class WorkTime extends Model
     {
         $offDutyTime = $this->formatDutyTime($offDutyTime);
 
-        if (($value = ($offDutyTime - $this->off_duty_time) / 3600 - 1) > 0)
+        if ($offDutyTime >= (21 * 3600) && ($value = ($offDutyTime - $this->off_duty_time) / 3600 - 1) > 0)
         {
             $mValue = $value - floor($value);
 

@@ -61,7 +61,7 @@ class IndexController extends BaseController
     }
 
     /**
-     *
+     * 编辑项目信息
      *
      * @author 秦昊
      * Date: 2018/12/28 12:52

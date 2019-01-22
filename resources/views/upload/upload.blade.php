@@ -112,18 +112,34 @@
                 ,url: "{{ config('domain.common') }}bank/info/update?id=" + data.id
                 ,data: postData
                 ,success: function(res) {
+                    console.log('1221212');
                     if (res.code === 0) {
                         obj.del();
                         layer.close(index);
                         location.reload();
                     } else {
-                        for (i in res.data)
+                        if (res.data)
                         {
-                            layer.msg(res.data[i][0])
+                            for (item in res.data)
+                            {
+                                layer.msg(res.data[item][0], {
+                                    end: function () {
+                                        // location.reload();
+                                    }
+                                })
+                            }
+                        } else if (res.message) {
+                            layer.msg(res.message, {
+                                end: function () {
+                                    location.reload();
+                                }
+                            })
                         }
+                        
                     }
                 }
                 ,error: function (err) {
+                    console.log('2323232');
                     data = err.responseJSON;
                     layer.alert(data.message);
                 }

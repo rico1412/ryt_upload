@@ -2,6 +2,7 @@
 
 namespace App\Modules\Upload\Business;
 
+use App\Exceptions\AppException;
 use App\Kernel\Base\BaseBusiness;
 use App\Modules\Upload\Dao\WorkTimeDao;
 
@@ -85,7 +86,12 @@ class ProjectBusiness extends BaseBusiness
      */
     public function delBankInfo($id)
     {
-        return $this->workTimeDao->destroy($id);
+        $res    = $this->workTimeDao->destroy($id);
+
+
+
+
+        return $res;
     }
 
     /**
@@ -97,6 +103,7 @@ class ProjectBusiness extends BaseBusiness
      * @param array $params
      * @return mixed
      * @throws \App\Exceptions\FaqInfoException
+     * @throws \Throwable
      */
     public function updateBankInfo($id, array $params)
     {
@@ -106,9 +113,17 @@ class ProjectBusiness extends BaseBusiness
             'on_duty_time_str'      => 'regex:/^[0-1][0-9]:[0-5][0-9]$/',
             'off_duty_time_str'     => 'regex:/^1[7-9]:[0-5][0-9]$/',
         ], [
+            'bank_code.min'             => '项目别名不能为空',
+            'project_name.min'          => '项目名不能为空',
             'on_duty_time_str.regex'    => '上班时间格式错误',
             'off_duty_time_str.regex'   => '下班时间格式错误',
         ])->validate();
+
+        throw_if(
+            (array_key_exists('bank_code', $params) && empty($params['bank_code'])),
+            AppException::class,
+            100003
+        );
 
         if (array_key_exists('on_duty_time_str', $params)
             || array_key_exists('off_duty_time_str', $params))
