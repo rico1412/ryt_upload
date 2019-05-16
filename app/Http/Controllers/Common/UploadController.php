@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Common;
 
-use App\Exceptions\FileUploadException;
 use App\Modules\Upload\Business\UploadBusiness;
 use App\Modules\Upload\Constant\ResExcelTitle;
 use Illuminate\Http\Request;
@@ -36,11 +35,12 @@ class UploadController extends BaseController
 
         $excel      = $request->file('excel');
 
-        $fileName   = get_file_name($excel) . '_res';
         $data       = $uploadBusiness->getResData($excel);
+
+        $fileName   = get_file_name($excel) . '_res';
         $headList   = array_values(ResExcelTitle::getNames());
 
-        $filePath = config('domain.common') . csv_export($data, $headList, $fileName);
+        $filePath   = config('domain.common') . csv_export($data, $headList, $fileName);
 
         return $this->revert(compact('filePath'));
     }

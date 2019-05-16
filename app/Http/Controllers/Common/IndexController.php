@@ -69,6 +69,7 @@ class IndexController extends BaseController
      * @param ProjectBusiness $projectBusiness
      * @return array|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      * @throws \App\Exceptions\FaqInfoException
+     * @throws \Throwable
      */
     public function updateBankInfo(Request $request, ProjectBusiness $projectBusiness)
     {
