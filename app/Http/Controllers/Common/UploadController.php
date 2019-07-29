@@ -34,10 +34,10 @@ class UploadController extends BaseController
         ])->validate();
 
         $excel      = $request->file('excel');
+        $fileName   = get_file_name($excel) . '_res';
 
         $data       = $uploadBusiness->getResData($excel);
 
-        $fileName   = get_file_name($excel) . '_res';
         $headList   = array_values(ResExcelTitle::getNames());
 
         $filePath   = config('domain.common') . csv_export($data, $headList, $fileName);

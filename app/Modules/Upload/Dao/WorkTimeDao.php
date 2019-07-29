@@ -57,7 +57,7 @@ class WorkTimeDao extends BaseDao
      * @author 秦昊
      * Date: 2018/12/19 17:37
      * @param $bankCode
-     * @return Model|null|object|static
+     * @return WorkTime|Model|null|object|static
      */
     public function findInfoByBankCode($bankCode)
     {

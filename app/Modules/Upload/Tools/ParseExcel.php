@@ -70,6 +70,7 @@ class ParseExcel
      * @param $fileExt
      * @param array $titleMap
      * @throws FileUploadException
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function __construct($path, $fileExt, array $titleMap)
     {

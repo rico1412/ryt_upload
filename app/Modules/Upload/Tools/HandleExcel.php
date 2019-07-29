@@ -38,6 +38,8 @@ class HandleExcel
         $parseExcel     = new ParseExcel($filePath, $fileExt, $titleMap);
         $workData       = $parseExcel->getFirstSheetData();
 
+        @unlink($filePath);
+
 //        dd($workData);
 //        dd($parseExcel->getWorkDayList());
 

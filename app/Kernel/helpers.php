@@ -196,7 +196,7 @@ if (!function_exists('csv_export'))
      * @param $fileName
      * @return string
      */
-    function csv_export(array $data = [], array $headList = [], $fileName)
+    function csv_export(array $data = [], array $headList = [], $fileName = '')
     {
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="'.$fileName.'.csv"');
