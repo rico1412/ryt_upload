@@ -6,6 +6,7 @@ use App\Exceptions\FileUploadException;
 use App\Modules\Upload\Constant\OriginExcelTitle;
 use App\Modules\Upload\Constant\ResExcelTitle;
 use App\Modules\Upload\Constant\Week;
+use App\Modules\Upload\Model\WorkTime;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -52,7 +53,7 @@ class HandleExcel
      * @param array $parseData
      * @return array
      */
-    public function getResExcelData($bankInfo, array $parseData)
+    public function getResExcelData(WorkTime $bankInfo, array $parseData)
     {
         $workTempData   = [];
         $onDutyTimeArr  = [];

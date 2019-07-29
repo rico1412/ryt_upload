@@ -3,6 +3,7 @@
 namespace App\Modules\Upload\Model;
 
 use App\Kernel\Traits\ModelTimeTraits;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -92,7 +93,7 @@ class WorkTime extends Model
     }
 
     /**
-     * 工作日迟到
+     * 工作日迟到（分钟）
      *
      * @author 秦昊
      * Date: 2018/12/20 15:38
@@ -121,12 +122,17 @@ class WorkTime extends Model
      */
     private function formatDutyTime($dutyTime)
     {
-        return ($dutyTime + 8 * 3600) % (3600 * 24);
+        return Carbon::createFromTimestamp($dutyTime)->secondsSinceMidnight();
     }
 
     /**
      * 工作日加班
      * 加班到21点后才算加班
+     *
+     * 工作日：
+     * 21:00:00-21:59:00打卡，算加班2小时；
+     * 22:00:00-23:45:00打卡，算加班3小时；
+     * 23:46:00-00:00:00打卡，算加班4小时。
      *
      * @author 秦昊
      * Date: 2018/12/20 15:38
@@ -137,13 +143,23 @@ class WorkTime extends Model
     {
         $offDutyTime = $this->formatDutyTime($offDutyTime);
 
-        if ($offDutyTime >= (21 * 3600) && ($value = ($offDutyTime - $this->off_duty_time) / 3600 - 1) > 0)
+        if ($offDutyTime >= (21 * 3600))
         {
-            $mValue = $value - floor($value);
+            if ($offDutyTime >= Carbon::createFromTime(21)->secondsSinceMidnight()
+                && $offDutyTime < Carbon::createFromTime(22)->secondsSinceMidnight())
+            {
+                return 2;
 
-            $m      = $mValue < 0.5 ? 0 : 0.5;
+            } elseif ($offDutyTime >= Carbon::createFromTime(22)->secondsSinceMidnight()
+                && $offDutyTime <= Carbon::createFromTime(23, 45)->secondsSinceMidnight())
+            {
+                return 3;
 
-            return floor($value) + $m;
+            } elseif ($offDutyTime > Carbon::createFromTime(23, 45)->secondsSinceMidnight()
+                && $offDutyTime <= Carbon::createFromTime(23, 59, 59)->secondsSinceMidnight())
+            {
+                return 4;
+            }
         }
 
         return '';
@@ -166,7 +182,8 @@ class WorkTime extends Model
 
         $m          = $mValue < 0.5 ? 0 : 0.5;
 
-        $res        = floor($overTime) + $m;
+        // 周末加班时间扣减一小时
+        $res        = floor($overTime) + $m - 1;
 
         return $res > 0 ? $res : '';
     }
@@ -189,8 +206,7 @@ class WorkTime extends Model
             $onDutyTime == $offDutyTime
             || $onDutyTime > ($this->on_duty_time + 2 * 3600) // 迟到两个小时以上
             || $offDutyTime < $this->off_duty_time
-        )
-        {
+        ) {
             return '异常';
         }
 

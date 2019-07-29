@@ -53,8 +53,8 @@ if (!function_exists('get_file_name'))
     }
 }
 
-if (!function_exists('time_to_second')) {
-
+if (!function_exists('time_to_second'))
+{
     /**
      * 时分秒转换为秒数
      *
@@ -84,8 +84,8 @@ if (!function_exists('time_to_second')) {
     }
 }
 
-if (!function_exists('second_to_time')) {
-
+if (!function_exists('second_to_time'))
+{
     /**
      * 秒数转换为时分
      *
@@ -106,8 +106,8 @@ if (!function_exists('second_to_time')) {
     }
 }
 
-if (!function_exists('get_page_size')) {
-
+if (!function_exists('get_page_size'))
+{
     /**
      * 获取每页默认记录数
      * User: lizhenhai
@@ -123,8 +123,8 @@ if (!function_exists('get_page_size')) {
     }
 }
 
-if (!function_exists('format_content')) {
-
+if (!function_exists('format_content'))
+{
     /**
      * 格式化content
      *
@@ -139,8 +139,8 @@ if (!function_exists('format_content')) {
     }
 }
 
-if (!function_exists('get_week')) {
-
+if (!function_exists('get_week'))
+{
     /**
      * 日期转换为星期
      *

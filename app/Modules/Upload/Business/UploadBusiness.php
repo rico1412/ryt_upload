@@ -34,8 +34,7 @@ class UploadBusiness extends BaseBusiness
     public function __construct(
         WorkTimeDao $workTimeDao,
         HandleExcel $handleExcel
-    )
-    {
+    ) {
         $this->workTimeDao  = $workTimeDao;
         $this->handleExcel  = $handleExcel;
     }
