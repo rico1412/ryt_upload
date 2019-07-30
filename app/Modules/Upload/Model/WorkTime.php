@@ -168,6 +168,11 @@ class WorkTime extends Model
     /**
      * 周末加班
      *
+     * 周六日单日加班未跨0点情况，
+     * 不满4小时不算，
+     * 满4小时不满8小时按4小时计，
+     * 超过9个小时按8小时计
+     *
      * @author 秦昊
      * Date: 2018/12/20 15:38
      * @param $onDutyTime
@@ -178,14 +183,20 @@ class WorkTime extends Model
     {
         $overTime   = ($offDutyTime - $onDutyTime) / 3600;
 
-        $mValue     = $overTime - floor($overTime);
+        if ($overTime >= 4 && $overTime < 9)
+        {
+            $res = 4;
 
-        $m          = $mValue < 0.5 ? 0 : 0.5;
+        } elseif ($overTime >= 9)
+        {
+            $res = 8;
 
-        // 周末加班时间扣减一小时
-        $res        = floor($overTime) + $m - 1;
+        } else {
 
-        return $res > 0 ? $res : '';
+            $res = 0;
+        }
+
+        return $res ?: '';
     }
 
     /**
