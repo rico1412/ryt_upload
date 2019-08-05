@@ -13,6 +13,24 @@ return [
         'off_duty_time' => '17:30',
         'project_name'  => '广发掌上E'
     ],
+    'hxbank' => [
+        'bank_code'     => 'hxbank',
+        'on_duty_time'  => '8:30',
+        'off_duty_time' => '18:30',
+        'project_name'  => '广州华兴银行'
+    ],
+    'dyyh' => [
+        'bank_code'     => 'dyyh',
+        'on_duty_time'  => '9:00',
+        'off_duty_time' => '17:30',
+        'project_name'  => '广州德阳银行'
+    ],
+    'gnx' => [
+        'bank_code'     => 'gnx',
+        'on_duty_time'  => '9:00',
+        'off_duty_time' => '17:30',
+        'project_name'  => '广农信'
+    ],
     'xybank' => [
         'bank_code'     => 'xybank',
         'on_duty_time'  => '9:00',
@@ -67,12 +85,6 @@ return [
         'off_duty_time' => '17:30',
         'project_name'  => '山东青岛银行项目组'
     ],
-    'hxbank' => [
-        'bank_code'     => 'hxbank',
-        'on_duty_time'  => '8:45',
-        'off_duty_time' => '18:30',
-        'project_name'  => '广州华兴银行'
-    ],
     'hxyh' => [
         'bank_code'     => 'hxyh',
         'on_duty_time'  => '8:30',
@@ -90,12 +102,6 @@ return [
         'on_duty_time'  => '8:00',
         'off_duty_time' => '17:00',
         'project_name'  => '东北'
-    ],
-    'dyyh' => [
-        'bank_code'     => 'dyyh',
-        'on_duty_time'  => '9:00',
-        'off_duty_time' => '17:30',
-        'project_name'  => '广州德阳银行'
     ],
     'hfyh' => [
         'bank_code'     => 'hfyh',
