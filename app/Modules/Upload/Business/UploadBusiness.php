@@ -16,38 +16,32 @@ use Illuminate\Http\UploadedFile;
  */
 class UploadBusiness extends BaseBusiness
 {
+    use HandleExcel;
+
     /**
      * @var WorkTimeDao
      */
     protected $workTimeDao;
 
     /**
-     * @var HandleExcel
-     */
-    protected $handleExcel;
-
-    /**
      * UploadBusiness constructor.
      * @param WorkTimeDao $workTimeDao
-     * @param HandleExcel $handleExcel
      */
     public function __construct(
-        WorkTimeDao $workTimeDao,
-        HandleExcel $handleExcel
+        WorkTimeDao $workTimeDao
     ) {
         $this->workTimeDao  = $workTimeDao;
-        $this->handleExcel  = $handleExcel;
     }
 
     /**
      * 解析文件，获取数据
      *
-     * @author 秦昊
-     * Date: 2018/12/21 09:41
      * @param UploadedFile $file
      * @return array
      * @throws FileUploadException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @author 秦昊
+     * Date: 2018/12/21 09:41
      */
     public function getResData(UploadedFile $file)
     {
@@ -58,11 +52,9 @@ class UploadBusiness extends BaseBusiness
             throw new FileUploadException(600005);
         }
 
-        $parseData      = $this->handleExcel->getParseData($file);
+        $parseData      = $this->getParseData($file);
 
-        $resExcelData   = $this->handleExcel->getResExcelData($bankInfo, $parseData);
-
-        return $resExcelData;
+        return $this->getResExcelData($bankInfo, $parseData);
     }
 
 }

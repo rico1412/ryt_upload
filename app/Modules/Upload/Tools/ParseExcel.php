@@ -4,11 +4,9 @@ namespace App\Modules\Upload\Tools;
 
 use App\Exceptions\FileUploadException;
 use App\Modules\Upload\Constant\OriginExcelTitle;
-use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 /**
@@ -78,10 +76,10 @@ class ParseExcel
 
         $fileExt = strtolower($fileExt);
 
-        if ($fileExt == 'xlsx')
+        if ($fileExt === 'xlsx')
         {
             $this->excelReader  = new Xlsx();
-        } else if ($fileExt == 'xls')
+        } else if ($fileExt === 'xls')
         {
             $this->excelReader  = new Xls();
         } else {
@@ -144,9 +142,7 @@ class ParseExcel
         if($sheet->getHighestDataRow() < 1) return null;
 
         //处理表格的业务
-        $linkSheet = $this->handleSheet($sheet);
-
-        return $linkSheet;
+        return $this->handleSheet($sheet);
     }
 
     /**
@@ -172,7 +168,7 @@ class ParseExcel
 
                 if (empty($cellValue)) continue;
 
-                if ($headValue = array_get($this->titleMap, $cellValue))
+                if (is_string($cellValue) && $headValue = array_get($this->titleMap, $cellValue))
                 {
                     $this->headMap[$key] = $headValue;
                 } else {
@@ -199,7 +195,7 @@ class ParseExcel
             {
                 $cell = $sheet->getCell($mk . $row);
 
-                if ($mv == OriginExcelTitle::DUTY_TIME)
+                if ($mv === OriginExcelTitle::DUTY_TIME)
                 {
                     // 获取时间戳
                     $cellValue = strtotime($cell->getFormattedValue());

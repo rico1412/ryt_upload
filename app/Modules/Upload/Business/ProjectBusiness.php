@@ -107,7 +107,7 @@ class ProjectBusiness extends BaseBusiness
      */
     public function updateBankInfo($id, array $params)
     {
-        app('validator')->make($params, [
+        validator($params, [
             'bank_code'             => 'string',
             'project_name'          => 'string',
             'on_duty_time_str'      => 'regex:/^[0-1][0-9]:[0-5][0-9]$/',
@@ -120,7 +120,7 @@ class ProjectBusiness extends BaseBusiness
         ])->validate();
 
         throw_if(
-            (array_key_exists('bank_code', $params) && empty($params['bank_code'])),
+            array_key_exists('bank_code', $params) && empty($params['bank_code']),
             AppException::class,
             100003
         );

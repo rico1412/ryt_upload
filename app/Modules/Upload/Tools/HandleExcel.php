@@ -15,7 +15,7 @@ use Illuminate\Http\UploadedFile;
  * @author 秦昊
  * Date: 2018/12/23 15:27
  */
-class HandleExcel
+trait HandleExcel
 {
     /**
      * 获取原始Excel解析后的数据
