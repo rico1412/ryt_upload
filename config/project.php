@@ -15,7 +15,7 @@ return [
     ],
     'hxbank' => [
         'bank_code'     => 'hxbank',
-        'on_duty_time'  => '8:30',
+        'on_duty_time'  => '8:45',
         'off_duty_time' => '18:30',
         'project_name'  => '广州华兴银行'
     ],

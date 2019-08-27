@@ -149,7 +149,7 @@ if (!function_exists('get_http_host'))
      */
     function get_http_host()
     {
-        return  app('request')->server('HTTP_HOST') ?: isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+        return  app('request')->server('HTTP_HOST') ?: array_get($_SERVER, 'HTTP_HOST', '');
     }
 }
 
