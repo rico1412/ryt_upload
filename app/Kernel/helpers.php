@@ -56,7 +56,7 @@ if (!function_exists('get_file_name'))
 if (!function_exists('time_to_second'))
 {
     /**
-     * 秒数转换为时分
+     * 时间转换为秒数
      *
      * @author 秦昊
      * Date: 2018/12/22 07:53
