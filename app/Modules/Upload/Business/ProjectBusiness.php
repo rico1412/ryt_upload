@@ -66,12 +66,14 @@ class ProjectBusiness extends BaseBusiness
         {
             $projectInfo['on_duty_time']    = time_to_second($projectInfo['on_duty_time']);
             $projectInfo['off_duty_time']   = time_to_second($projectInfo['off_duty_time']);
+
             $projectInfo['add_time']        = get_now();
             $projectInfo['last_update_time']= get_now();
             $projectInfo['created_at']      = date('Y-m-d H:i:s');
             $projectInfo['updated_at']      = date('Y-m-d H:i:s');
-//            dd($projectInfo);
         }
+
+        unset($projectInfo);
 
         $this->workTimeDao->syncProjects($projectList);
     }
@@ -86,16 +88,11 @@ class ProjectBusiness extends BaseBusiness
      */
     public function delBankInfo($id)
     {
-        $res    = $this->workTimeDao->destroy($id);
-
-
-
-
-        return $res;
+        return $this->workTimeDao->destroy($id);
     }
 
     /**
-     *
+     * 编辑项目信息
      *
      * @author 秦昊
      * Date: 2018/12/28 12:51

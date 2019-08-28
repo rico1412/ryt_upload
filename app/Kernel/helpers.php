@@ -56,31 +56,16 @@ if (!function_exists('get_file_name'))
 if (!function_exists('time_to_second'))
 {
     /**
-     * 时分秒转换为秒数
+     * 秒数转换为时分
      *
      * @author 秦昊
      * Date: 2018/12/22 07:53
-     * @param $time
-     * @return float|int
+     * @param $time string
+     * @return string
      */
-    function time_to_second($time)
+    function time_to_second(string $time)
     {
-        if ($time && ($timeArr = explode(':', $time))
-            && ($arrLength = count($timeArr)) >= 2)
-        {
-            $h = (int)$timeArr[0];
-            $m = (int)$timeArr[1];
-            $s = 0;
-
-            if ($arrLength == 3)
-            {
-                $s = (int)$timeArr[2];
-            }
-
-            return $h * 3600 + $m * 60 + $s;
-        }
-
-        return 0;
+        return \Carbon\Carbon::createFromTimeString($time)->secondsSinceMidnight();
     }
 }
 
@@ -91,18 +76,13 @@ if (!function_exists('second_to_time'))
      *
      * @author 秦昊
      * Date: 2018/12/22 07:53
-     * @param $second
+     * @param $second int
      * @return string
      */
-    function second_to_time($second)
+    function second_to_time(int $second)
     {
-        $hour   = sprintf('%02d', $second % (3600 * 24) / 3600);
-
-        $m      = sprintf('%02d', $second % 3600 / 60);
-
-        $time   = "{$hour}:{$m}";
-
-        return $time;
+        return \Carbon\Carbon::createFromTime(0, 0)
+            ->addSeconds($second)->format('H:i');
     }
 }
 
