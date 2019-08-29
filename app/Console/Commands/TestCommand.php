@@ -41,6 +41,7 @@ class TestCommand extends Command
     public function handle()
     {
         // DO SOME TEST
+        dd(date('H:i:s', strtotime('20181126083109')));
     }
     
 }

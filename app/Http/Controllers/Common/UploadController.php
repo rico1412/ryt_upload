@@ -27,7 +27,7 @@ class UploadController extends BaseController
      */
     public function export(Request $request, UploadBusiness $uploadBusiness)
     {
-        app('validator')->make($request->all(), [
+        validator($request->all(), [
             'excel' => 'required',
         ], [
             'excel.required' => 'Excel文件上传错误',

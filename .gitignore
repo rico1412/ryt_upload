@@ -4,5 +4,4 @@ Homestead.json
 Homestead.yaml
 .env
 composer.lock
-/storage/files/*
 *.csv

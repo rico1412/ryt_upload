@@ -127,40 +127,78 @@ if (!function_exists('get_week'))
      * @author 秦昊
      * Date: 2018/12/20 09:38
      * @param $date
+     * @param $inFormat
      * @return mixed
      */
-    function get_week($date)
+    function get_week($date, $inFormat = 'Ymd')
     {
-        //强制转换日期格式
-        $date_str=date('Y-m-d',strtotime($date));
+        $arr = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
-        //封装成数组
-        $arr=explode("-", $date_str);
+        $index = \Carbon\Carbon::createFromFormat($inFormat, $date)->dayOfWeek;
 
-        //参数赋值
-        //年
-        $year=$arr[0];
+        return array_get($arr, $index, '');
+    }
+}
 
-        //月，输出2位整型，不够2位右对齐
-        $month=sprintf('%02d',$arr[1]);
+if(!function_exists('check_date_is_valid'))
+{
+    /**
+     * 校验日期格式是否正确
+     *
+     * @param string $date 日期
+     * @param array $formats 需要检验的格式数组
+     * @return boolean
+     */
+    function check_date_is_valid($date, array $formats = [])
+    {
+        $unixTime = strtotime($date);
 
-        //日，输出2位整型，不够2位右对齐
-        $day=sprintf('%02d',$arr[2]);
+        if (!$unixTime) { //strtotime转换不对，日期格式显然不对。
+            return false;
+        }
 
-        //时分秒默认赋值为0；
-        $hour = $minute = $second = 0;
+        $formatsArr = array('Y-m-d', 'Y/m/d','Y-m-d H:i:s');
+        $formatsArr = array_merge($formatsArr, $formats);
 
-        //转换成时间戳
-        $strap = mktime($hour,$minute,$second,$month,$day,$year);
+        //校验日期的有效性，只要满足其中一个格式就OK
+        foreach ($formatsArr as $format)
+        {
+            if (date($format, $unixTime) === $date)
+            {
+                return true;
+            }
+        }
 
-        //获取数字型星期几
-        $number_wk=date("w",$strap);
+        return false;
+    }
+}
 
-        //自定义星期数组
-        $weekArr=array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
+if(!function_exists('transfer_excel_date'))
+{
+    /**
+     * 转换 excel 日期
+     * @param $excelDate
+     * @param string $format
+     * @param string $default
+     * @return string
+     */
+    function transfer_excel_date($excelDate, $format = 'YmdHis', $default = '0')
+    {
+        if(check_date_is_valid($excelDate, [$format]))
+        {
+            return date($format, strtotime($excelDate));
+        }
 
-        //获取数字对应的星期
-        return $weekArr[$number_wk];
+        try
+        {
+            $tmp = (int) (($excelDate - 25569) * 3600 * 24);
+
+        } catch (Exception $exception)
+        {
+            return $excelDate;
+        }
+
+        return gmdate($format, $tmp);
     }
 }
 

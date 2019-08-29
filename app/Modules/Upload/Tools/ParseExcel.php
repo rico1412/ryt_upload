@@ -193,41 +193,26 @@ class ParseExcel
 
             foreach($this->headMap as $mk => $mv)
             {
-                $cell = $sheet->getCell($mk . $row);
-
-                if ($mv === OriginExcelTitle::DUTY_TIME)
+                if ($cell = $sheet->getCell($mk . $row))
                 {
-                    // 获取时间戳
-                    $cellValue = strtotime($cell->getFormattedValue());
-
-                } else {
                     $cellValue = $cell->getValue();
 
                     if ($cellValue instanceof RichText)
                     {
                         $cellValue = $cellValue->getPlainText();
                     }
-                }
 
-                $linkRow[$mv] = $cellValue;
+                    $linkRow[$mv] = $cellValue;
+                }
             }
 
             // 去除空数据
             $linkRow = array_filter($linkRow, function($data)
             {
-                return $data != null;
+                return filled($data);
             });
 
             if(empty($linkRow)) continue;
-
-            // 获取日期
-            if ($dutyTs = array_get($linkRow, OriginExcelTitle::DUTY_TIME))
-            {
-                // 只保留日期
-                $dayTime = date('Y-m-d', $dutyTs);
-
-                $linkRow[OriginExcelTitle::DAY_TIME]  = $dayTime;
-            }
 
             $linkSheet[$row] = $linkRow;
         }

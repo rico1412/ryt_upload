@@ -7,6 +7,7 @@ use App\Modules\Upload\Constant\OriginExcelTitle;
 use App\Modules\Upload\Constant\ResExcelTitle;
 use App\Modules\Upload\Constant\Week;
 use App\Modules\Upload\Model\WorkTime;
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -29,21 +30,23 @@ trait HandleExcel
      */
     public function getParseData(UploadedFile $file)
     {
-        $filePath       = get_file_path($file);
-        $fileExt        = $file->getClientOriginalExtension();
+        $filePath = get_file_path($file);
 
-        $titleMap       = array_flip(OriginExcelTitle::getNames());
+        try
+        {
+            $fileExt    = $file->getClientOriginalExtension();
 
-        // 解析Excel数据
-        $parseExcel     = new ParseExcel($filePath, $fileExt, $titleMap);
-        $workData       = $parseExcel->getFirstSheetData();
+            $titleMap   = array_flip(OriginExcelTitle::getNames());
 
-        @unlink($filePath);
+            // 解析Excel数据
+            $parseExcel = new ParseExcel($filePath, $fileExt, $titleMap);
 
-//        dd($workData);
-//        dd($parseExcel->getWorkDayList());
+            return $parseExcel->getFirstSheetData();
 
-        return $workData;
+        } finally
+        {
+            @unlink($filePath);
+        }
     }
 
     /**
@@ -62,9 +65,10 @@ trait HandleExcel
 
         foreach ($parseData as $workInfo)
         {
+            $dutyTime   = strtotime(transfer_excel_date($workInfo[OriginExcelTitle::DUTY_TIME], 'YmdHi'));
+            $workInfo[OriginExcelTitle::DAY_TIME] = Carbon::createFromTimestamp($dutyTime)->format('Ymd');
             $dayTime    = $workInfo[OriginExcelTitle::DAY_TIME];
             $name       = $workInfo[OriginExcelTitle::NAME];
-            $dutyTime   = $workInfo[OriginExcelTitle::DUTY_TIME];
 
             $resWorkInfo                                = [];
             $resWorkInfo[ResExcelTitle::NAME]           = $name;
@@ -135,8 +139,8 @@ trait HandleExcel
                         break;
                 }
 
-                $workInfo[ResExcelTitle::OVER_TIME] = $overTime == 0 ? '' : $overTime;
-                $workInfo[ResExcelTitle::LATE_TIME] = $lateTime == 0 ? '' : $lateTime;
+                $workInfo[ResExcelTitle::OVER_TIME] = $overTime === 0 ? '' : $overTime;
+                $workInfo[ResExcelTitle::LATE_TIME] = $lateTime === 0 ? '' : $lateTime;
                 $workInfo[ResExcelTitle::STATUS]    = $status;
 
                 $workInfo[ResExcelTitle::WORK_DAYS] = $workDayCount;
@@ -149,4 +153,5 @@ trait HandleExcel
 
         return $resWorkData;
     }
+
 }
