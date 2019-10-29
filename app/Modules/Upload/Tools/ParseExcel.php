@@ -179,6 +179,8 @@ class ParseExcel
             break;
         }
 
+//        dd($this->headMap);
+
         if (empty($this->headMap)) throw new FileUploadException(600003);
 
         //整理数据

@@ -11,8 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 
 /**
- *
- *
  * @author 秦昊
  * Date: 2018/12/23 15:27
  */
@@ -72,7 +70,7 @@ trait HandleExcel
 
             $resWorkInfo                                = [];
             $resWorkInfo[ResExcelTitle::NAME]           = $name;
-            $resWorkInfo[ResExcelTitle::JOB_NUM]        = $workInfo[OriginExcelTitle::JOB_NUM];
+            $resWorkInfo[ResExcelTitle::JOB_NUM]        = array_get($workInfo, OriginExcelTitle::JOB_NUM, '-');
             $resWorkInfo[ResExcelTitle::PROJECT_NAME]   = array_get($workInfo, OriginExcelTitle::PROJECT_NAME);
             $resWorkInfo[ResExcelTitle::WEEK]           = get_week($dayTime);
             $resWorkInfo[ResExcelTitle::DAY]            = $dayTime;
