@@ -27,6 +27,10 @@ class UploadController extends BaseController
      */
     public function export(Request $request, UploadBusiness $uploadBusiness)
     {
+        set_time_limit(60);
+
+        ini_set('memory_limit','256M');
+
         validator($request->all(), [
             'excel' => 'required',
         ], [
